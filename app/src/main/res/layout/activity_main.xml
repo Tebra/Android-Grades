@@ -1,0 +1,104 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="230dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <ScrollView
+            android:id="@+id/scroller"
+            android:layout_width="match_parent"
+            android:layout_height="398dp"
+            android:layout_weight="0.85"
+            android:fillViewport="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="391dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/modulName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hello_world"
+                    android:textAlignment="center"
+                    android:textSize="30sp" />
+
+                <View
+                    android:id="@+id/separatorHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dp"
+                    android:background="@android:color/darker_gray"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/zwischenP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/action_settings"
+                    android:textAlignment="center"
+                    android:textSize="20sp" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Hier wird berechnung der mindestnote" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Hier berechnung der höchst möglichen o.a" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/newNoteButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="bottom|right"
+                android:layout_marginRight="10dp"
+                android:onClick="addNewNote"
+                android:src="@android:drawable/ic_input_add" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/separatorVertical"
+        android:layout_width="0.5dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray"
+        android:visibility="visible" />
+
+    <ListView
+        android:id="@+id/theListDesign"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        
+    </ListView>
+
+</LinearLayout>
