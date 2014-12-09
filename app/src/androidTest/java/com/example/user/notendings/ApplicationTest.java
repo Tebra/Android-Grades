@@ -1,4 +1,4 @@
-package com.example.johndoe.notendesktop;
+package com.example.user.notendings;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

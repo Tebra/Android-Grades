@@ -1,28 +1,32 @@
-package com.example.johndoe.notendesktop;
+package com.example.user.notendings;
 
 /**
- * Created by John Doe on 30.11.2014.
+ * Created by user on 02.12.2014.
  */
 public class NotenModel {
-
     String notenArt;
     int prozent;
     float note;
 
-    public NotenModel(){}
+    public NotenModel() {
+    }
 
-    public NotenModel(String notenArt, int prozent, float note){
+    public NotenModel(String notenArt, int prozent, float note) {
         this.notenArt = notenArt;
         this.prozent = prozent;
         this.note = note;
     }
 
-    public void setNotenArt(String notenArt) {
-        this.notenArt = notenArt;
+    public int getProzent() {
+        return prozent;
     }
 
     public void setProzent(int prozent) {
         this.prozent = prozent;
+    }
+
+    public float getNote() {
+        return note;
     }
 
     public void setNote(float note) {
@@ -33,11 +37,7 @@ public class NotenModel {
         return notenArt;
     }
 
-    public int getProzent() {
-        return prozent;
-    }
-
-    public float getNote() {
-        return note;
+    public void setNotenArt(String notenArt) {
+        this.notenArt = notenArt;
     }
 }

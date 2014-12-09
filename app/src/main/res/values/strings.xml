@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">NotenDesktop</string>
+    <string name="app_name">Modulo</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="art_of_test">ZP oder MP</string>
-    <string name="percent_of_note">% der Note</string>
-    <string name="new_module">Neues Modul</string>
-    <string name="about_menu">About</string>
+    <string name="new_modul_text">Neues Modul</string>
+    <string name="modul_kuerzel">DWW-M / Modul Kuerzel</string>
+    <string name="modul_vollname">Differenzial Mathe/ Voller name</string>
+    <string name="ok_input">Fertig</string>
+    <string name="cancel_input">Abbrechen</string>
+    <string name="kind_of_test">ZP oder MP</string>
+    <string name="prozent_note">% der Note</string>
+    <string name="about_text">About</string>
+    <string name="note_text">Note</string>
+    <string name="reset_semseter">Reset</string>
+    <string name="gewunschte_note">Gewünschte Endnote</string>
 
 </resources>

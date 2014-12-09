@@ -10,23 +10,24 @@
 
 
     <EditText
-        android:id="@+id/editText1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="Modul Kuerzel"
+        android:ems="10"
+        android:id="@+id/editText1"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:hint="Modul Kuerzel"
-        android:inputType="textPersonName" />
+        android:layout_marginTop="49dp" />
 
     <EditText
-        android:id="@+id/editText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/editText1"
-        android:layout_below="@+id/editText1"
-        android:layout_centerHorizontal="true"
-        android:ems="10"
+        android:inputType="textPersonName"
         android:hint="Modul Name"
-        android:inputType="textPersonName" />
+        android:ems="10"
+        android:id="@+id/editText2"
+        android:layout_below="@+id/editText1"
+        android:layout_alignLeft="@+id/editText1"
+        android:layout_alignStart="@+id/editText1" />
 </RelativeLayout>
