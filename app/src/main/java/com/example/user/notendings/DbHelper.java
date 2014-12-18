@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -175,12 +174,20 @@ public class DbHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
 
             //Log.d("DBHelper", modulArt);
-            String deleteQuery = "DELETE FROM " + TABLE_NAME_NOTEN + " WHERE " + KEY_NOTEN_ART + " = '" + modulArt + "' AND " + KEY_SECONDARY + " = '"+idLinker+"'" ;
+            String deleteQuery = "DELETE FROM " + TABLE_NAME_NOTEN + " WHERE " + KEY_NOTEN_ART + " = '" + modulArt + "' AND " + KEY_SECONDARY + " = '" + idLinker + "'";
             //Log.d("DBHelper", deleteQuery);
             db.execSQL(deleteQuery);
             db.close();
 
 
         }
+    }
+
+    public void deleteNoteofModule(String idLinker) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String deleteQuery = "DELETE FROM " + TABLE_NAME_NOTEN + " WHERE " + KEY_SECONDARY + " = '" + idLinker + "'";
+        db.execSQL(deleteQuery);
+        db.close();
     }
 }

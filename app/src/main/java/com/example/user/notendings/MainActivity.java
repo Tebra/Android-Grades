@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,7 +39,7 @@ public class MainActivity extends ActionBarActivity {
     SimpleCursorAdapter dataAdapter;
     EditText wantedNote;
 
-    String idLinker;
+    String idLinker = null;
     float prozentZahl = 0;
     int notenAnzahl = 0;
     float prozentRechner = 0;
@@ -61,6 +60,16 @@ public class MainActivity extends ActionBarActivity {
 
         populateModulenList();
 
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String modulKuerzel = parent.getItemAtPosition(position).toString();
+                idLinker = db.modulOeffnen(modulKuerzel);
+                populateMainPanel(idLinker);
+            }
+        });
+
         listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -71,8 +80,10 @@ public class MainActivity extends ActionBarActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String modulDelete = listview.getItemAtPosition(positionFinal).toString();
+                        idLinker = db.modulOeffnen(modulDelete);
                         //Log.d("DBHelper", modulDelete);
                         deleteModuleFromDb(modulDelete);
+                        db.deleteNoteofModule(idLinker);
                     }
                 })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -82,16 +93,6 @@ public class MainActivity extends ActionBarActivity {
                             }
                         }).show();
                 return true;
-            }
-        });
-
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String modulKuerzel = parent.getItemAtPosition(position).toString();
-                idLinker = db.modulOeffnen(modulKuerzel);
-                populateMainPanel(idLinker);
             }
         });
 
@@ -226,39 +227,43 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void addNewNote(View view) {
-        LayoutInflater li = LayoutInflater.from(context);
-        final View promptsView = li.inflate(R.layout.add_noten_im_modul, null);
+        if (idLinker != null) {
+            LayoutInflater li = LayoutInflater.from(context);
+            final View promptsView = li.inflate(R.layout.add_noten_im_modul, null);
 
-        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setView(promptsView);
+            final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+            alertDialogBuilder.setView(promptsView);
 
-        alertDialogBuilder.setCancelable(false).setPositiveButton("Fertig", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+            alertDialogBuilder.setCancelable(false).setPositiveButton("Fertig", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
-                final EditText notenArt = (EditText) promptsView.findViewById(R.id.editTextTestName);
-                final EditText notenProzent = (EditText) promptsView.findViewById(R.id.editTestNotenProzentEingabe);
-                final EditText notenNote = (EditText) promptsView.findViewById(R.id.editTextNotenEingabe);
+                    final EditText notenArt = (EditText) promptsView.findViewById(R.id.editTextTestName);
+                    final EditText notenProzent = (EditText) promptsView.findViewById(R.id.editTestNotenProzentEingabe);
+                    final EditText notenNote = (EditText) promptsView.findViewById(R.id.editTextNotenEingabe);
 
-                if (!TextUtils.isEmpty(notenArt.getText().toString()) || !TextUtils.isEmpty(notenProzent.getText().toString()) || !TextUtils.isEmpty(notenNote.getText().toString()))
-                    ;
-                {
-                    db.createNewNote(notenArt.getText().toString(), notenProzent.getText().toString(), notenNote.getText().toString(), idLinker);
-                }
-
-                populateMainPanel(idLinker);
-
-            }
-        })
-                .setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
+                    if (!TextUtils.isEmpty(notenArt.getText().toString()) || !TextUtils.isEmpty(notenProzent.getText().toString()) || !TextUtils.isEmpty(notenNote.getText().toString()))
+                        ;
+                    {
+                        db.createNewNote(notenArt.getText().toString(), notenProzent.getText().toString(), notenNote.getText().toString(), idLinker);
                     }
-                });
 
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+                    populateMainPanel(idLinker);
+
+                }
+            })
+                    .setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        } else {
+            Toast.makeText(context, "Bitte Modul Wählen!", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void createNewModule(String modulKuerzel, String modulName) {
@@ -377,6 +382,8 @@ public class MainActivity extends ActionBarActivity {
 
                 if (mindestNote <= 6) {
                     minNote.setText("" + mindestNote);
+                } else if (mindestNote < 1) {
+                    minNote.setText("1");
                 } else {
                     minNote.setText(">6");
                 }

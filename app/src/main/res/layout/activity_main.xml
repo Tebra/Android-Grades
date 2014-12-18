@@ -55,7 +55,8 @@
             <View
                 android:id="@+id/separatorHorizontal2"
                 android:layout_width="match_parent"
-                android:layout_height="3dp"
+                android:layout_height="2dp"
+                android:backgroundTint="#0080ff"
                 android:background="@android:color/darker_gray"
                 android:visibility="visible" />
 
@@ -140,8 +141,9 @@
 
     <View
         android:id="@+id/separatorVertical"
-        android:layout_width="0.5dp"
+        android:layout_width="2dp"
         android:layout_height="match_parent"
+        android:backgroundTint="#0080ff"
         android:background="@android:color/darker_gray"
         android:visibility="visible" />
 
