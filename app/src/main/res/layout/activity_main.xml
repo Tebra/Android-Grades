@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Auswahl >>"
                 android:textAlignment="center"
-                android:textSize="28sp" />
+                android:textSize="22sp" />
 
             <View
                 android:id="@+id/separatorHorizontal"
@@ -42,7 +42,7 @@
                 android:id="@+id/notenList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="2dp">
 
             </ListView>
         </LinearLayout>
@@ -55,15 +55,14 @@
             <View
                 android:id="@+id/separatorHorizontal2"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:backgroundTint="#0080ff"
+                android:layout_height="2.5dp"
                 android:background="@android:color/darker_gray"
                 android:visibility="visible" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="38dp"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/textView"
@@ -130,7 +129,7 @@
                     android:layout_height="40dp"
                     android:layout_gravity="bottom|right"
                     android:layout_marginRight="10dp"
-                    android:onClick="addNewNote"
+                    android:onClick="addNewGrade"
                     android:src="@android:drawable/ic_input_add" />
             </LinearLayout>
 
@@ -141,9 +140,8 @@
 
     <View
         android:id="@+id/separatorVertical"
-        android:layout_width="2dp"
+        android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:backgroundTint="#0080ff"
         android:background="@android:color/darker_gray"
         android:visibility="visible" />
 

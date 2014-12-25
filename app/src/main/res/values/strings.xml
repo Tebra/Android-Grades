@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Modulo</string>
+    <string name="app_name"> Modulo</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="new_modul_text">Neues Modul</string>
@@ -12,8 +12,10 @@
     <string name="kind_of_test">ZP oder MP</string>
     <string name="prozent_note">% der Note</string>
     <string name="about_text">About</string>
-    <string name="note_text">Note</string>
+    <string name="note_text">Note: </string>
     <string name="reset_semseter">Reset</string>
     <string name="gewunschte_note">Gewünschte Endnote</string>
+    <string name="moduleFullName">Modul Name</string>
+    <string name="module_shorthand">Modul Kuerzel</string>
 
 </resources>

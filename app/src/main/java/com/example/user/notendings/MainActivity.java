@@ -30,18 +30,17 @@ public class MainActivity extends ActionBarActivity {
     ArrayList<String> list = new ArrayList<String>();
     ArrayAdapter<String> adapter;
 
-    ImageButton newNoteButton;
-    ListView listview;
+    ImageButton newGradeButton;
+    ListView moduleListView;
     TextView modulNameTextView;
-    ListView notenView;
-    TextView minNote;
-    TextView endNote;
+    ListView gradesListView;
+    TextView minGrade;
+    TextView endGrade;
     SimpleCursorAdapter dataAdapter;
-    EditText wantedNote;
+    EditText wantedGrade;
 
     String idLinker = null;
     float prozentZahl = 0;
-    int notenAnzahl = 0;
     float prozentRechner = 0;
     float notenSumme = 0;
 
@@ -50,27 +49,30 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        newNoteButton = (ImageButton) findViewById(R.id.newNoteButton);
-        listview = (ListView) findViewById(R.id.theListDesign);
-        notenView = (ListView) findViewById(R.id.notenList);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_launcher);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
+        newGradeButton = (ImageButton) findViewById(R.id.newNoteButton);
+        moduleListView = (ListView) findViewById(R.id.theListDesign);
+        gradesListView = (ListView) findViewById(R.id.notenList);
         modulNameTextView = (TextView) findViewById(R.id.modulName);
-        minNote = (TextView) findViewById(R.id.minNote);
-        endNote = (TextView) findViewById(R.id.maxNote);
-        wantedNote = (EditText) findViewById(R.id.gewunschteNote);
+        minGrade = (TextView) findViewById(R.id.minNote);
+        endGrade = (TextView) findViewById(R.id.maxNote);
+        wantedGrade = (EditText) findViewById(R.id.gewunschteNote);
 
-        populateModulenList();
+        populateModuleList();
 
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        moduleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String modulKuerzel = parent.getItemAtPosition(position).toString();
-                idLinker = db.modulOeffnen(modulKuerzel);
-                populateMainPanel(idLinker);
+                String modulShortName = parent.getItemAtPosition(position).toString();
+                idLinker = db.modulOeffnen(modulShortName);
+                populateGradePanel(idLinker);
             }
         });
 
-        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        moduleListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 final int positionFinal = position;
@@ -79,7 +81,7 @@ public class MainActivity extends ActionBarActivity {
                 builder.setMessage("Delete?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String modulDelete = listview.getItemAtPosition(positionFinal).toString();
+                        String modulDelete = moduleListView.getItemAtPosition(positionFinal).toString();
                         idLinker = db.modulOeffnen(modulDelete);
                         //Log.d("DBHelper", modulDelete);
                         deleteModuleFromDb(modulDelete);
@@ -97,7 +99,7 @@ public class MainActivity extends ActionBarActivity {
         });
 
 
-        notenView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gradesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(final AdapterView<?> parent, final View view, final int position, long id) {
                 //Log.d("Position", String.valueOf(position))
@@ -109,7 +111,7 @@ public class MainActivity extends ActionBarActivity {
                         Cursor c = ((SimpleCursorAdapter) parent.getAdapter()).getCursor();
                         db.deleteNote(c.getString(c.getColumnIndex(db.KEY_NOTEN_ART)), idLinker);
 
-                        populateMainPanel(idLinker);
+                        populateGradePanel(idLinker);
 
                     }
                 })
@@ -121,26 +123,6 @@ public class MainActivity extends ActionBarActivity {
                         }).show();
             }
         });
-
-        /*wantedNote.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable s) {}
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String strEnteredVal = wantedNote.getText().toString();
-
-                if (!strEnteredVal.equals("")) {
-                    int num = Integer.parseInt(strEnteredVal);
-                    if (num <= 6) {
-                        wantedNote.setText("" + num);
-                    } else {
-                        wantedNote.setText("");
-                    }
-                }
-            }
-        });*/
     }
 
     @Override
@@ -178,17 +160,17 @@ public class MainActivity extends ActionBarActivity {
                     /**
                      * If EditText contains any text then proceed.
                      */
-                    if (!TextUtils.isEmpty(modulKuerzel.getText().toString()) || !TextUtils.isEmpty(modulName.getText().toString())) {
-                        String modulKurzText = modulKuerzel.getText().toString();
-                        String modulNameText = modulName.getText().toString();
+                    String modulKurzText = modulKuerzel.getText().toString();
+                    String modulNameText = modulName.getText().toString();
 
+                    if ( !modulKurzText.isEmpty() && !modulNameText.isEmpty() ) {
                         createNewModule(modulKurzText, modulNameText);
-                        populateModulenList();
+                        populateModuleList();
 
                         Toast.makeText(MainActivity.this, modulKurzText + " created", Toast.LENGTH_SHORT).show();
 
                     } else {
-                        Toast.makeText(MainActivity.this, "Fehler, nochmal!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "Fehler, leere Stellen", Toast.LENGTH_LONG).show();
                     }
                 }
             })
@@ -210,7 +192,7 @@ public class MainActivity extends ActionBarActivity {
                 public void onClick(DialogInterface dialog, int which) {
 
                     db.reset();
-                    populateModulenList();
+                    populateModuleList();
 
                 }
             })
@@ -226,7 +208,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void addNewNote(View view) {
+    public void addNewGrade(View view) {
         if (idLinker != null) {
             LayoutInflater li = LayoutInflater.from(context);
             final View promptsView = li.inflate(R.layout.add_noten_im_modul, null);
@@ -238,18 +220,16 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
-                    final EditText notenArt = (EditText) promptsView.findViewById(R.id.editTextTestName);
-                    final EditText notenProzent = (EditText) promptsView.findViewById(R.id.editTestNotenProzentEingabe);
-                    final EditText notenNote = (EditText) promptsView.findViewById(R.id.editTextNotenEingabe);
+                    final EditText gradeType = (EditText) promptsView.findViewById(R.id.editTextTestName);
+                    final EditText gradeProzent = (EditText) promptsView.findViewById(R.id.editTestNotenProzentEingabe);
+                    final EditText gradeNumber = (EditText) promptsView.findViewById(R.id.editTextNotenEingabe);
 
-                    if (!TextUtils.isEmpty(notenArt.getText().toString()) || !TextUtils.isEmpty(notenProzent.getText().toString()) || !TextUtils.isEmpty(notenNote.getText().toString()))
-                        ;
-                    {
-                        db.createNewNote(notenArt.getText().toString(), notenProzent.getText().toString(), notenNote.getText().toString(), idLinker);
+                    if (!TextUtils.isEmpty(gradeType.getText().toString()) && !TextUtils.isEmpty(gradeProzent.getText().toString()) && !TextUtils.isEmpty(gradeNumber.getText().toString())) {
+                        db.createNewNote(gradeType.getText().toString(), gradeProzent.getText().toString(), gradeNumber.getText().toString(), idLinker);
+                        populateGradePanel(idLinker);
+                    } else {
+                        Toast.makeText(context, "Fehler, leere Stellen", Toast.LENGTH_LONG).show();
                     }
-
-                    populateMainPanel(idLinker);
-
                 }
             })
                     .setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
@@ -266,12 +246,19 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    /**
+     * Trying to use a model to represent the Modules
+     *
+     * @param modulKuerzel The Shorthand Name of the Module
+     * @param modulName    The Full Name of the Module
+     */
     public void createNewModule(String modulKuerzel, String modulName) {
         ModulModel modul = new ModulModel(modulKuerzel, modulName);
         db.createNewModule(modul);
     }
 
-    private void populateModulenList() {
+
+    private void populateModuleList() {
         /*String[] values = new String[]{"AKK-E", "AKK-K", "DWW-M",
                 "DWW-W", "SYS-A-M", "IuK-C", "IuK-W", "IuK-S", "IuK-D"};*/
 
@@ -279,25 +266,20 @@ public class MainActivity extends ActionBarActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, values);
-        listview.setAdapter(adapter);
+        moduleListView.setAdapter(adapter);
     }
 
     private void deleteModuleFromDb(String KEY) {
         db.deleteModule(KEY);
-        populateModulenList();
+        populateModuleList();
     }
 
-    private void populateMainPanel(String idLinker) {
+    private void populateGradePanel(String idLinker) {
         modulNameTextView.setText(db.modulVollName(idLinker));
 
         Cursor cursor = db.getAllNoten(idLinker);
 
-        /**
-         * Notenberechnungen
-         */
-
         prozentZahl = 0;
-        notenAnzahl = 0;
         prozentRechner = 0;
         notenSumme = 0;
         float restProzent = 0;
@@ -309,10 +291,6 @@ public class MainActivity extends ActionBarActivity {
                     prozentZahl += Integer.parseInt(cursor.getString(cursor.getColumnIndex(db.KEY_NOTEN_PROZENT)));
                     //Log.d("Prozente", "" + prozentZahl);
 
-                    notenAnzahl++;
-
-                    float ausgabe = Float.parseFloat(cursor.getString(cursor.getColumnIndex(db.KEY_NOTEN_NOTE)));
-                    //Log.d("ausgabe", "" + ausgabe);
                     notenSumme += (prozentRechner / 100) * (Float.parseFloat(cursor.getString(cursor.getColumnIndex(db.KEY_NOTEN_NOTE))));
                     //Log.d("Check", "" + notenSumme);
                 }
@@ -321,16 +299,16 @@ public class MainActivity extends ActionBarActivity {
         }
 
         if (prozentZahl == 100) {
-            minNote.setText("//");
-            endNote.setText("" + notenSumme);
+            minGrade.setText("//");
+            endGrade.setText("" + notenSumme);
 
         } else if (prozentZahl > 100) {
-            minNote.setText("Fehler");
-            endNote.setText("Fehler");
+            minGrade.setText("Fehler Prozent");
+            endGrade.setText("Fehler Prozent");
 
         } else if (prozentZahl == 0) {
-            minNote.setText("//");
-            endNote.setText("//");
+            minGrade.setText("//");
+            endGrade.setText("//");
 
         } else {
             restProzent = 100 - prozentZahl;
@@ -339,14 +317,20 @@ public class MainActivity extends ActionBarActivity {
             mindestNote = (float) Math.round(mindestNote * 100) / 100;
 
             if (mindestNote > 6) {
-                minNote.setText("6.0");
-                endNote.setText("//");
-            } else {
-                minNote.setText("" + mindestNote);
-                endNote.setText("//");
+                minGrade.setText("6.0");
+                endGrade.setText("//");
+            }
+
+            else if (mindestNote < 1)
+            {
+                minGrade.setText("1");
+                endGrade.setText("//");
+            }
+            else {
+                minGrade.setText("" + mindestNote);
+                endGrade.setText("//");
             }
         }
-
         cursor.moveToFirst();
 
         String from[] = new String[]{db.KEY_NOTEN_ART, db.KEY_NOTEN_PROZENT, db.KEY_NOTEN_NOTE};
@@ -359,7 +343,7 @@ public class MainActivity extends ActionBarActivity {
                 to,
                 0);
 
-        notenView.setAdapter(dataAdapter);
+        gradesListView.setAdapter(dataAdapter);
         db.close();
     }
 
@@ -368,8 +352,8 @@ public class MainActivity extends ActionBarActivity {
         if (prozentZahl < 100) {
             float wunschNote = 0;
             findViewById(R.id.mainLayout).requestFocus();
-            if (!wantedNote.getText().toString().equals("")) {
-                wunschNote = Float.parseFloat(wantedNote.getText().toString());
+            if (!wantedGrade.getText().toString().equals("")) {
+                wunschNote = Float.parseFloat(wantedGrade.getText().toString());
             }
 
             float restProzent = 100 - prozentZahl;
@@ -381,19 +365,19 @@ public class MainActivity extends ActionBarActivity {
                 mindestNote = (float) Math.round(mindestNote * 100) / 100;
 
                 if (mindestNote <= 6) {
-                    minNote.setText("" + mindestNote);
+                    minGrade.setText("" + mindestNote);
                 } else if (mindestNote < 1) {
-                    minNote.setText("1");
+                    minGrade.setText("1");
                 } else {
-                    minNote.setText(">6");
+                    minGrade.setText(">6");
                 }
 
             } else {
-                minNote.setText("Fehler");
+                minGrade.setText("Fehler");
             }
         } else {
-            minNote.setText("//");
-            endNote.setText("//");
+            minGrade.setText("//");
+            endGrade.setText("//");
         }
     }
 }

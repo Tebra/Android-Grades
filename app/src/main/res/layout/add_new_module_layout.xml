@@ -13,18 +13,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:hint="Modul Kuerzel"
+        android:hint="@string/module_shorthand"
         android:ems="10"
         android:id="@+id/editText1"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="49dp" />
+        android:layout_centerHorizontal="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:hint="Modul Name"
+        android:hint="@string/moduleFullName"
         android:ems="10"
         android:id="@+id/editText2"
         android:layout_below="@+id/editText1"
