@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -263,10 +264,12 @@ public class MainActivity extends ActionBarActivity {
                 "DWW-W", "SYS-A-M", "IuK-C", "IuK-W", "IuK-S", "IuK-D"};*/
 
         String[] values = db.getAllModules().toArray(new String[db.getAllModules().size()]);
+        Arrays.sort(values);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, values);
         moduleListView.setAdapter(adapter);
+
     }
 
     private void deleteModuleFromDb(String KEY) {
