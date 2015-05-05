@@ -258,7 +258,6 @@ public class MainActivity extends ActionBarActivity {
         db.createNewModule(modul);
     }
 
-
     private void populateModuleList() {
         /*String[] values = new String[]{"AKK-E", "AKK-K", "DWW-M",
                 "DWW-W", "SYS-A-M", "IuK-C", "IuK-W", "IuK-S", "IuK-D"};*/
@@ -290,41 +289,41 @@ public class MainActivity extends ActionBarActivity {
         if (cursor.getCount() != 0) {
             if (!cursor.getString(cursor.getColumnIndex(db.KEY_NOTEN_PROZENT)).equals("") || !cursor.getString(cursor.getColumnIndex(db.KEY_NOTEN_NOTE)).equals("")) {
                 do {
-                    prozentRechner = Integer.parseInt(cursor.getString(cursor.getColumnIndex(db.KEY_NOTEN_PROZENT)));
-                    prozentZahl += Integer.parseInt(cursor.getString(cursor.getColumnIndex(db.KEY_NOTEN_PROZENT)));
+                    prozentRechner = Float.parseFloat(cursor.getString(cursor.getColumnIndex(db.KEY_NOTEN_PROZENT)));
+                    prozentZahl += Float.parseFloat(cursor.getString(cursor.getColumnIndex(db.KEY_NOTEN_PROZENT)));
                     //Log.d("Prozente", "" + prozentZahl);
 
-                    notenSumme += (prozentRechner / 100) * (Float.parseFloat(cursor.getString(cursor.getColumnIndex(db.KEY_NOTEN_NOTE))));
+                    notenSumme += (prozentRechner / 100.0) * (Float.parseFloat(cursor.getString(cursor.getColumnIndex(db.KEY_NOTEN_NOTE))));
                     //Log.d("Check", "" + notenSumme);
                 }
                 while (cursor.moveToNext());
             }
         }
 
-        if (prozentZahl == 100) {
+        if (prozentZahl == 100.0) {
             minGrade.setText("//");
             endGrade.setText("" + notenSumme);
 
-        } else if (prozentZahl > 100) {
+        } else if (prozentZahl > 100.0) {
             minGrade.setText("Fehler Prozent");
             endGrade.setText("Fehler Prozent");
 
-        } else if (prozentZahl == 0) {
+        } else if (prozentZahl == 0.0) {
             minGrade.setText("//");
             endGrade.setText("//");
 
         } else {
-            restProzent = 100 - prozentZahl;
+            restProzent = (float) (100.0 - prozentZahl);
             float mindestNote = (float) (3.75 - notenSumme) / (restProzent / 100);
             //Log.d("vorRounden", "" + mindestNote);
             mindestNote = (float) Math.round(mindestNote * 100) / 100;
 
-            if (mindestNote > 6) {
+            if (mindestNote > 6.0) {
                 minGrade.setText("6.0");
                 endGrade.setText("//");
             }
 
-            else if (mindestNote < 1)
+            else if (mindestNote < 1.0)
             {
                 minGrade.setText("1");
                 endGrade.setText("//");
@@ -352,14 +351,14 @@ public class MainActivity extends ActionBarActivity {
 
     public void setWantedGrade(View view) {
 
-        if (prozentZahl < 100) {
+        if (prozentZahl < 100.0) {
             float wunschNote = 0;
             findViewById(R.id.mainLayout).requestFocus();
             if (!wantedGrade.getText().toString().equals("")) {
                 wunschNote = Float.parseFloat(wantedGrade.getText().toString());
             }
 
-            float restProzent = 100 - prozentZahl;
+            float restProzent = (float) (100.0 - prozentZahl);
 
             //Log.d("Werte", prozentZahl + " / " + restProzent + " / " + notenSumme + " / " + wunschNote);
 
@@ -367,7 +366,7 @@ public class MainActivity extends ActionBarActivity {
                 float mindestNote = (float) (wunschNote - notenSumme) / (restProzent / 100);
                 mindestNote = (float) Math.round(mindestNote * 100) / 100;
 
-                if (mindestNote <= 6) {
+                if (mindestNote <= 6.0) {
                     minGrade.setText("" + mindestNote);
                 } else if (mindestNote < 1) {
                     minGrade.setText("1");
