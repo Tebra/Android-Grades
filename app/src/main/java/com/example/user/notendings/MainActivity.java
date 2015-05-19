@@ -20,8 +20,11 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.steamcrafted.loadtoast.LoadToast;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -148,14 +151,13 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.new_modul) {
             LayoutInflater li = LayoutInflater.from(context);
             final View promptsView = li.inflate(R.layout.add_new_module_layout, null);
-
             final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
             alertDialogBuilder.setView(promptsView);
+            final LoadToast lodiTo = new LoadToast(context);
 
             alertDialogBuilder.setCancelable(false).setPositiveButton("Fertig", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
                     final EditText modulKuerzel = (EditText) promptsView.findViewById(R.id.editText1);
                     final EditText modulName = (EditText) promptsView.findViewById(R.id.editText2);
                     /**
@@ -167,7 +169,6 @@ public class MainActivity extends ActionBarActivity {
                     if ( !modulKurzText.isEmpty() && !modulNameText.isEmpty() ) {
                         createNewModule(modulKurzText, modulNameText);
                         populateModuleList();
-
                         Toast.makeText(MainActivity.this, modulKurzText + " created", Toast.LENGTH_SHORT).show();
 
                     } else {
@@ -191,7 +192,6 @@ public class MainActivity extends ActionBarActivity {
             builder.setMessage("Delete all data?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
                     db.reset();
                     populateModuleList();
 
@@ -220,7 +220,6 @@ public class MainActivity extends ActionBarActivity {
             alertDialogBuilder.setCancelable(false).setPositiveButton("Fertig", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
                     final EditText gradeType = (EditText) promptsView.findViewById(R.id.editTextTestName);
                     final EditText gradeProzent = (EditText) promptsView.findViewById(R.id.editTestNotenProzentEingabe);
                     final EditText gradeNumber = (EditText) promptsView.findViewById(R.id.editTextNotenEingabe);
