@@ -4,11 +4,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+
+import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.support.ConnectionSource;
 
 import java.util.ArrayList;
 
-public class DbHelper extends SQLiteOpenHelper {
+public class DbHelper extends OrmLiteSqliteOpenHelper {
 
     // Modulen Tabelle
     public static final String TABLE_NAME_MODULE = "module";
@@ -31,6 +33,16 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     @Override
+    public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
+
+    }
+
+   /* @Override
     public void onCreate(SQLiteDatabase db) {
 
         String CREATE_TABLE_MODULE = "CREATE TABLE " + TABLE_NAME_MODULE +
@@ -40,14 +52,14 @@ public class DbHelper extends SQLiteOpenHelper {
                 + KEY_NOTEN_PROZENT + " INTEGER, " + KEY_NOTEN_NOTE + " FLOAT, " + KEY_SECONDARY + " INTEGER )";
         db.execSQL(CREATE_TABLE_MODULE);
         db.execSQL(CREATE_TABLE_NOTEN);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_MODULE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_NOTEN);
         onCreate(db);
-    }
+    }*/
 
     public void createNewModule(ModulModel modul) {
         SQLiteDatabase db = this.getWritableDatabase();

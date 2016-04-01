@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,13 +19,14 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+
 import net.steamcrafted.loadtoast.LoadToast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends OrmLiteBaseActivity<DbHelper> {
 
     final Context context = this;
     DbHelper db = new DbHelper(context);
@@ -53,9 +53,9 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        /*getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_launcher);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);*/
 
         newGradeButton = (ImageButton) findViewById(R.id.newNoteButton);
         moduleListView = (ListView) findViewById(R.id.theListDesign);
