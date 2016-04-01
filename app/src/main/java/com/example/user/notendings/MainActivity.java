@@ -253,8 +253,8 @@ public class MainActivity extends OrmLiteBaseActivity<DbHelper> {
      * @param modulName    The Full Name of the Module
      */
     public void createNewModule(String modulKuerzel, String modulName) {
-        ModulModel modul = new ModulModel(modulKuerzel, modulName);
-        db.createNewModule(modul);
+        Modul modul = new Modul(modulName, modulKuerzel);
+        //db.createNewModule(modul);
     }
 
     private void populateModuleList() {
@@ -374,7 +374,7 @@ public class MainActivity extends OrmLiteBaseActivity<DbHelper> {
                 }
 
             } else {
-                minGrade.setText("Fehler");
+                minGrade.setText("Fehler bei Eingabe");
             }
         } else {
             minGrade.setText("//");
